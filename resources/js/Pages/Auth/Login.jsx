@@ -29,11 +29,12 @@ export default function Login({ status, canResetPassword }) {
     return (
         <GuestLayout>
             <Head title="Log in" />
-
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
-
+            <div className='text-lg pt-8 font-bold text-center text-gray-800 mb-14'>
+                Login to your account
+            </div>
             <form onSubmit={submit}>
-                <div>
+                <div className='mt-10'>
                     <InputLabel htmlFor="email" value="Email" />
 
                     <TextInput
