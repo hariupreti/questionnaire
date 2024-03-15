@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text("question_text"); 
             $table->unsignedBigInteger("section_id");
-            $table->unsignedBigInteger("correct_answer_id");
+            $table->unsignedBigInteger("correct_answer_id")->nullable();
             $table->timestamps();
         });
     }

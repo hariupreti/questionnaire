@@ -15,6 +15,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             DefaultItemsSeeder::class,
+            PhysicsQuestionsSeeder::class,
+            ChemistryQuestionsSeeder::class
         ]);
 
     }

@@ -28,7 +28,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                         <header className="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
                             <div className="shrink-0 flex items-center">
                                 <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
+                                    <ApplicationLogo className="h-40 rounded-none -mt-24 scale-50 absolute -left-2" />
                                 </Link>
                             </div>
                             <div className="flex lg:justify-center lg:col-start-2">
@@ -73,17 +73,17 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                     </div>
                                 ) : (
                                     <>
-                                        <Link
+                                        {/* <Link
                                             href={route('login')}
                                             className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                                         >
                                             Log in
-                                        </Link>
+                                        </Link> */}
                                         <Link
                                             href={route('register')}
                                             className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                                         >
-                                            Register
+                                            Create Student Account
                                         </Link>
                                     </>
                                 )}
@@ -94,7 +94,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                             <div className='w-full bg-slate-200 p-10 rounded'>
                                 <h1 className='font-semibold text-lg'>Great to see you here!!!</h1>
                                 <p>Proceed futher to login for further setup.</p>
-                                <div className='mt-20 '>
+                                <div className='mt-10'>
                                     {
                                         auth.user ?
                                             <div>Hello {auth.user.name.split(' ').slice(-1).join(' ')},<br></br>
@@ -104,7 +104,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                                 </div>
                                             </div>
                                             :
-                                            <div><Login></Login><div className='mt-80 text-right'>
+                                            <div><Login></Login><div className='mt-20 text-right'>
                                                 <div className='text-lg font-sm'>Searching for credentials ?</div>
                                                 <div><span className='text-xs cursor-pointer hover:text-black' onClick={(e) => toggle(e)}>View default admin</span></div>
                                                 <div className={`text-xs text-left mt-5 p-8 bg-slate-600 ${show ? "hidden" : "display"}`}>
