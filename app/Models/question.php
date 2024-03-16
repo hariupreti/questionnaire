@@ -13,4 +13,9 @@ class question extends Model
     {
         return $this->belongsTo(section::class);
     }
+
+    public function answers()
+    {
+        return $this->hasMany(answer::class);
+    }
 }

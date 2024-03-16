@@ -17,6 +17,8 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/questionnaire/access/{token}', [QuestionnaireController::class, 'index'])->name('access.questionnaire');
+
 // Authorized and verified access only
 Route::middleware(['auth', 'verified'])->group(function () {
     //Profiles related routes
@@ -31,7 +33,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/questionnaire', [QuestionnaireController::class, 'store'])->name('questionnaire.save');
     Route::delete('/{qid}', [QuestionnaireController::class, 'destroy'])->name('questionnaire.delete');
     Route::patch('/questionnaire', [QuestionnaireController::class, 'update'])->name('questionnaire.update');
-
 });
 
 require __DIR__ . '/auth.php';
