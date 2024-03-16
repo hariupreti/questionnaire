@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorequestionnaireRequest;
 use App\Http\Requests\UpdatequestionnaireRequest;
 use App\Models\questionnaire;
+use Illuminate\Support\Facades\Date;
 
 class QuestionnaireController extends Controller
 {
@@ -29,7 +30,19 @@ class QuestionnaireController extends Controller
      */
     public function store(StorequestionnaireRequest $request)
     {
-        //
+        $newQuestionnaire = questionnaire::create([
+            'title' => $request->title,
+            'expiry_date' => date('Y-m-d', strtotime($request->selectedExpiryDate))
+        ]);
+        if($newQuestionnaire){
+            //Start random question assign process
+        }
+
+        // return response()->json([
+        //     "success" => "Questionnaire generated successfully!!!"
+        // ],200);
+
+        return back()->with("success","Questionnaire generated successfully!!!");
     }
 
     /**

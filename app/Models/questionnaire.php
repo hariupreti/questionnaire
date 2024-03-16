@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class questionnaire extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['title','expiry_date'];
+
+    protected function casts(): array
+    {
+        return [
+            'expiry_date' => 'datetime:Y-m-d',
+        ];
+    }
 }

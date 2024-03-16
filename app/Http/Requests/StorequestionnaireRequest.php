@@ -11,7 +11,7 @@ class StorequestionnaireRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,15 @@ class StorequestionnaireRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => "required|string|max:150|min:4|unique:questionnaires,title",
+            'selectedExpiryDate' => 'required|date|after:today',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'selectedExpiryDate' => 'expiry date',
         ];
     }
 }

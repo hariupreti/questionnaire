@@ -7,6 +7,10 @@ export default defineConfig({
         laravel({
             input: 'resources/js/app.jsx',
             refresh: true,
+            resolve: name => {
+                const pages = import.meta.glob('./Pages/**/*.jsx', { eager: true })
+                return pages[`./Pages/${name}.jsx`]
+            },
         }),
         react(),
     ],
