@@ -9,7 +9,7 @@ class questionnaire extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title','expiry_date'];
+    protected $fillable = ['title','expiry_date','questions'];
 
     protected function casts(): array
     {

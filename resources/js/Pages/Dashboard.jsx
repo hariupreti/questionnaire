@@ -22,37 +22,31 @@ export default function Dashboard({ auth }) {
         questionnaireId: 0
     });
     const { data, setData, post, processing, errors, reset } = useForm({
-        id: 0,
+        id: null,
         title: '',
         selectedExpiryDate: null,
         remember: true,
     });
 
-    useEffect(() => {
-        if (expiryDate) {
-            setData({ ...data, selectedExpiryDate: new Date(expiryDate).toLocaleDateString("en-US") })
-        }
-        return () => {
-            reset('title');
-            reset('expiryDate');
-        };
-    }, [expiryDate]);
-
     const submit = (e) => {
         e.preventDefault();
-        if (data.id == 0) {
-            post(route('questionnaire.save'), {
+        const isUpdateCase = (data.id == null || data.id <= 0) ? false : true;
+        if (!isUpdateCase) {
+            router.post(route('questionnaire.save'),{
+                "title": data.title,
+                "selectedExpiryDate": data.selectedExpiryDate
+            }, {
                 onSuccess: () => setShowModal(false),
             });
         } else {
             router.post(route('questionnaire.update'), {
                 "id": data.id,
                 "title": data.title,
-                "selectedExpiryDate": data.expiryDate
+                "selectedExpiryDate": data.selectedExpiryDate
             },
-            {
-                onSuccess: () => setShowModal(false),
-            });
+                {
+                    onSuccess: () => setShowModal(false),
+                });
         }
     };
 
@@ -131,16 +125,16 @@ export default function Dashboard({ auth }) {
                                             isFocused={true}
                                             onChange={(e) => setData('title', e.target.value)}
                                         />
-                                        <InputError message={errors.title} className="mt-2" />
+                                        <InputError message={pageProps.errors.title} className="mt-2" />
                                     </div>
                                     <div className="mt-6">
                                         <InputLabel htmlFor="expiryDate" value="Expiry Date" className='text-md font-bold' />
                                         <DatePicker className='inline-block flex-initial w-full outline-none focus:outline-none ring-0 focus:ring-0 overflow-hidden rounded-md border-gray-200 ' name='expiryDate' id='expiryDate'
                                             selected={expiryDate}
-                                            onChange={(date) => setExpiryDate(date)}
+                                            onChange={(date) => [setExpiryDate(date), setData({ ...data, selectedExpiryDate: new Date(date).toLocaleDateString("en-US") })]}
                                             dateFormat="MM/dd/yyyy"
                                         />
-                                        <InputError message={errors.selectedExpiryDate} className="mt-2" />
+                                        <InputError message={pageProps.errors.selectedExpiryDate} className="mt-2" />
                                     </div>
                                     <div className='grid w-full my-8'>
                                         <strong>Questions and Answers</strong><br></br>
@@ -194,7 +188,7 @@ export default function Dashboard({ auth }) {
                         :
                         <div className='grid container mx-auto place-content-center my-20'>
                             <div className='flex place-content-center text-5xl text-gray-400'><ImStarEmpty></ImStarEmpty></div>
-                            <h className="my-8 text-slate-600">There is no any questionnare yet!!!</h>
+                            <h className="my-8 text-slate-600">Questionnaire not found!</h>
                             <div className='text-center -mt-6 text-green-500' ><button onClick={(e) => showModelView(e)}>Create one</button></div>
                         </div>
                     }

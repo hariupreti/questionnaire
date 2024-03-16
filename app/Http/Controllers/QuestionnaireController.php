@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorequestionnaireRequest;
 use App\Http\Requests\UpdatequestionnaireRequest;
+use App\Models\question;
 use App\Models\questionnaire;
 use Illuminate\Support\Facades\Date;
 
@@ -25,6 +26,14 @@ class QuestionnaireController extends Controller
         //
     }
 
+    private function getRandomQuestions($subject, $count)
+    {
+        // Fetch random questions from database based on section and count
+        return question::whereHas('section', function ($query) use ($subject) {
+            $query->where('name', $subject);
+        })->inRandomOrder()->limit($count)->get();
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -37,14 +46,25 @@ class QuestionnaireController extends Controller
             ]);
             return back()->with("success", "Questionnaire updated successfully!");
         } else {
-            $newQuestionnaire = questionnaire::create([
-                'title' => $request->title,
-                'expiry_date' => date('Y-m-d', strtotime($request->selectedExpiryDate))
-            ]);
-            if ($newQuestionnaire) {
-                //Start random question assign process
+            $questionnaire = new Questionnaire();
+            $questionnaire->title = $request->title;
+            $questionnaire->expiry_date = date('Y-m-d', strtotime($request->selectedExpiryDate));
+            if ($questionnaire) {
+                // Creating new questinnaire questions 
+                // collection from physics and chemestry 
+                // section taking 5 from each section
+
+                // Fetch 5 random chemistry questions
+                $physicsQuestionsIds = $this->getRandomQuestions('Physics', 5)->pluck("id")->toArray();
+                $chemistryQuestionsIds = $this->getRandomQuestions('Chemistry', 5)->pluck("id")->toArray();
+
+                $questionnaire->questions = serialize(array_merge($physicsQuestionsIds,$chemistryQuestionsIds));
+                $questionnaire->save();
+
+                //Run mail functionality
+
+                return back()->with("success", "Questionnaire generated successfully!!!");
             }
-            return back()->with("success", "Questionnaire generated successfully!!!");
         }
     }
 
