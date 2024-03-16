@@ -4,7 +4,7 @@ import Modal from '@/Components/Modal';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { ImStarEmpty } from "react-icons/im";
 import DatePicker from "react-datepicker";
@@ -16,6 +16,10 @@ export default function Dashboard({ auth }) {
     const [expiryDate, setExpiryDate] = useState(null);
     const [showModal, setShowModal] = useState({
         show: false
+    });
+    const [showDeleteAlert, setShowDeleteAlert] = useState({
+        show: false,
+        questionnaireId: 0
     });
     const { data, setData, post, processing, errors, reset } = useForm({
         id: 0,
@@ -41,13 +45,34 @@ export default function Dashboard({ auth }) {
                 onSuccess: () => setShowModal(false),
             });
         } else {
-            post(route('questionnaire.update'), {
+            router.post(route('questionnaire.update'), {
+                "id": data.id,
+                "title": data.title,
+                "selectedExpiryDate": data.expiryDate
+            },
+            {
                 onSuccess: () => setShowModal(false),
             });
         }
     };
 
+    const deletQuestionnaire = (questionnaire) => {
+        setShowDeleteAlert({ show: true, questionnaireId: questionnaire.id });
+    };
+
+    const performDelete = (id) => {
+        if (id > 0) {
+            router.delete(route('questionnaire.delete', id), {
+                onSuccess: () => setShowDeleteAlert({
+                    show: false,
+                    questionnaireId: 0
+                }),
+            });
+        }
+    }
+
     const showModelView = (e) => {
+        reset("id", "selectedExpiryDate", "title")
         setShowModal({
             show: true
         });
@@ -76,6 +101,19 @@ export default function Dashboard({ auth }) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div>
+                        {/* Modal for delete operation alert */}
+                        <Modal maxWidth="sm" show={showDeleteAlert.show} onClose={() => setShowDeleteAlert({ show: false })}>
+                            <div className='min-h-40 p-6 font-bold text-lg text-center'>
+                                Are you sure want to delete this item ?
+                                <p className='text-xs font-normal'>This process can't be undo once item is deleted.</p>
+                                <div className='w-full grid grid-flow-col grid-cols-2 gap-4 mt-12'>
+                                    <button className='bg-slate-100 p-2 font-normal rounded-md border-gray-400 border' onClick={(e) => setShowDeleteAlert({ show: false })}>Cancle</button>
+                                    <button className='bg-red-400 p-2 font-normal rounded-md border-red-500 border' onClick={(e) => performDelete(showDeleteAlert.questionnaireId)}>Delete</button>
+                                </div>
+                            </div>
+                        </Modal>
+
+                        {/* Create/Update questionnaire modal */}
                         <Modal show={showModal.show} onClose={() => setShowModal({ show: false })}>
                             <div className='p-4'>
                                 <div className='text-lg font-bold text-left text-gray-800 pb-4 border-b-2 border-gray-300'>
@@ -135,6 +173,10 @@ export default function Dashboard({ auth }) {
                             <button onClick={(e) => showModelView(e)} className='inline-flex items-center px-4 py-2 m-3 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150'>Create New</button>
                         </div>
                     </div>
+                    {/* showing success and failed message block here */}
+                    {pageProps.message && pageProps.message.success != "" && <div className='p-3 bg-green-300 border border-green-400 w-full rounded-md'>{pageProps.message.success}</div>}
+                    {pageProps.message && pageProps.message.failed != "" && <div className='p-3 bg-red-300 border border-red-400 w-full rounded-md'>{pageProps.message.failed}</div>}
+
                     {pageProps.questionnaire && pageProps.questionnaire.length > 0 ?
                         <div className='grid'>
                             {
@@ -143,7 +185,7 @@ export default function Dashboard({ auth }) {
                                         <div className='font-semibold col-span-6 float-left'>{eachQuestionnaire.title}</div>
                                         <div className='col-span-6 float-right'>
                                             <button className='bg-primary mr-6 bg-slate-100 border-gray-400 rounded-md px-2 cursor-pointer hover:bg-slate-50' onClick={(e) => editQuestionnaire(eachQuestionnaire)}>Edit</button>
-                                            <button className='bg-primary bg-red-500 border-gray-400 rounded-md px-2 cursor-pointer hover:bg-red-600 text-white'>Delete</button>
+                                            <button className='bg-primary bg-red-500 border-gray-400 rounded-md px-2 cursor-pointer hover:bg-red-600 text-white' onClick={(e) => deletQuestionnaire(eachQuestionnaire)}>Delete</button>
                                         </div>
                                     </div>
                                 })

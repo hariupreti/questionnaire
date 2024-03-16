@@ -30,19 +30,22 @@ class QuestionnaireController extends Controller
      */
     public function store(StorequestionnaireRequest $request)
     {
-        $newQuestionnaire = questionnaire::create([
-            'title' => $request->title,
-            'expiry_date' => date('Y-m-d', strtotime($request->selectedExpiryDate))
-        ]);
-        if($newQuestionnaire){
-            //Start random question assign process
+        if ($request->id > 0) {
+            questionnaire::where("id", $request->id)->update([
+                'title' => $request->title,
+                'expiry_date' => date('Y-m-d', strtotime($request->selectedExpiryDate)),
+            ]);
+            return back()->with("success", "Questionnaire updated successfully!");
+        } else {
+            $newQuestionnaire = questionnaire::create([
+                'title' => $request->title,
+                'expiry_date' => date('Y-m-d', strtotime($request->selectedExpiryDate))
+            ]);
+            if ($newQuestionnaire) {
+                //Start random question assign process
+            }
+            return back()->with("success", "Questionnaire generated successfully!!!");
         }
-
-        // return response()->json([
-        //     "success" => "Questionnaire generated successfully!!!"
-        // ],200);
-
-        return back()->with("success","Questionnaire generated successfully!!!");
     }
 
     /**
@@ -66,14 +69,15 @@ class QuestionnaireController extends Controller
      */
     public function update(UpdatequestionnaireRequest $request, questionnaire $questionnaire)
     {
-        //
+        dd($request->all(), $questionnaire);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(questionnaire $questionnaire)
+    public function destroy($questionnaireId = 0)
     {
-        //
+        questionnaire::find($questionnaireId)->delete();
+        return back()->with("success", "Questionnaire deleted!!!");
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class StorequestionnaireRequest extends FormRequest
 {
@@ -19,10 +20,11 @@ class StorequestionnaireRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules(Request $request): array
     {
         return [
-            'title' => "required|string|max:150|min:4|unique:questionnaires,title",
+            'id' => "nullable|sometimes|integer|exists:questionnaires,id",
+            'title' => "required|string|max:150|min:4|unique:questionnaires,title,".$request->title,
             'selectedExpiryDate' => 'required|date|after:today',
         ];
     }
