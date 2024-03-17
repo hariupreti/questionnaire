@@ -35,8 +35,10 @@ MAIL_PASSWORD=
 MAIL_ENCRYPTION=
 ```
 
-  ### To run test cases using pest, run below command on root direcoty
+  ### To run test cases using pest, run below command on root directory
 
   ```php
   ./vendor/bin/pest
   ```
+
+On the root directory we have notes.text file, where we have some informatin regarding assessment tasks.

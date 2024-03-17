@@ -1,0 +1,11 @@
+What has been done for the assessment ?
+
+Seeded admin user and students
+Admin can create, update and delete questionnaire
+Once a questionnaire is created, mail being queued for all available students
+
+Only list questionnaire which are not expired till yet.
+Sent unique url to access test for students on mail
+
+Test cases for questionnaire
+Test cases for mail URL access and answer submission.
