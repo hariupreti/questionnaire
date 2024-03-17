@@ -31,7 +31,7 @@ export default function Test({ props }) {
                 {pageProps.questionnaire && pageProps.questionnaire.id > 0 &&
                     <div className=' w-screen grid grid-flow-col grid-cols-12 pb-6 pt-4 bg-white fixed top-0 place-content-center container mx-auto'>
                         <div className='col-span-6'>
-                            <strong className='text-slate-800 text-lg'> {pageProps.questionnaire.title} asdfasdfs</strong><br></br>
+                            <strong className='text-slate-800 text-lg'> {pageProps.questionnaire.title}</strong><br></br>
                             <span className='text-xs font-thin'>Valid till: {pageProps.questionnaire.expiry_date}</span>
                         </div>
                         <div className='col-span-6'>
