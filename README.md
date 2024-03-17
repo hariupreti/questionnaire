@@ -2,7 +2,7 @@
 It is a technical assessment where admin user can create questionnaire and recorded students will notify through the mail, where students and admin data are seeded on application setup.
 
 
-# Setup on local machine
+# Setup on local machine, development setup
 #### 1. Clone the main branch from above repository.
 #### 2. Make sure that you have ``` node 18.19.1``` ```Composer 2.2.6``` ``` php ^8.2``` and required mysql and other dependencies on your machine.
 
@@ -17,7 +17,7 @@ npm install
 
 php artisan key:generate
 
-php artisan migrate:fresh --seed //This will seed our default data
+php artisan migrate:fresh --seed
 
 php artisan optimize:clear
 
@@ -25,7 +25,7 @@ php artisan serve
 
 npm run dev
 
-php artisan queue:work //for mail queue
+php artisan queue:work
 ```
 
   Make sure to update below information in .env file based on your SMTP information to verify mail functionality.
