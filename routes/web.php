@@ -34,7 +34,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     //Routes for questionnaire 
     Route::post('/questionnaire', [QuestionnaireController::class, 'store'])->name('questionnaire.save');
-    Route::delete('/{qid}', [QuestionnaireController::class, 'destroy'])->name('questionnaire.delete');
+    Route::delete('questionnaire/{qid}', [QuestionnaireController::class, 'destroy'])->name('questionnaire.delete');
     Route::patch('/questionnaire', [QuestionnaireController::class, 'update'])->name('questionnaire.update');
 });
 

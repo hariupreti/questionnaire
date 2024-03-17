@@ -2,12 +2,12 @@
 It is a technical assessment where admin user can create questionnaire and recorded students will notify through the mail, where students and admin data are seeded on application setup.
 
 
-# How to setup on local machine ?
+# Setup on local machine
 #### 1. Clone the main branch from above repository.
-#### 2. Make sure that you have ```Composer 2.2.6``` ``` php ^8.2``` and required mysql and other dependencies on your machine.
+#### 2. Make sure that you have ``` node 18.19.1``` ```Composer 2.2.6``` ``` php ^8.2``` and required mysql and other dependencies on your machine.
 
 
-# Follow below steps on root directory ?
+# Follow below steps on root directory
 ##### Inside project direcoty we have .env.example create .env from it or ``` cp .env.example .env ``` and update mysql and other relavent information on that newly created .env.
 Once our env setup completed run following commands.
 ```unix
@@ -34,3 +34,9 @@ MAIL_USERNAME=
 MAIL_PASSWORD=
 MAIL_ENCRYPTION=
 ```
+
+  ### To run test cases using pest, run below command on root direcoty
+
+  ```php
+  ./vendor/bin/pest
+  ```

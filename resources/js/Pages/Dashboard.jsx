@@ -138,11 +138,11 @@ export default function Dashboard({ auth }) {
                                     </div>
                                     <div className='grid w-full my-8'>
                                         <strong>Questions and Answers</strong><br></br>
-                                        <p className=' text-slate-600'>While saving questionnaire entry, random questions from our records will be applied for newly generated questionnaire.</p>
+                                        <p className=' text-slate-600'>Random questions from our archives will be appended to newly created questionnaires while the questionnaire input is being saved.</p>
                                     </div>
                                     <div className='grid w-full my-8 border-b-2 border-gray-100 pb-6'>
                                         <strong>Student Enrollment</strong><br></br>
-                                        <p className=' text-slate-600 text-sm'>It is checked by default, i.e. all of recorded students will notifiy once questionnaire created.</p>
+                                        <p className=' text-slate-600 text-sm'>By default, it is set to notify all recorded students as soon as the questionnaire is created.</p>
                                         <label className="flex items-center">
                                             <Checkbox
                                                 name="remember"
