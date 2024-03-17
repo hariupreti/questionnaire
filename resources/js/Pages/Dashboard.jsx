@@ -24,7 +24,7 @@ export default function Dashboard({ auth }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         id: null,
         title: '',
-        selectedExpiryDate: null,
+        selectedExpiryDate: new Date().toLocaleDateString("en-US"),
         remember: true,
     });
 

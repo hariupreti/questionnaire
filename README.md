@@ -20,6 +20,8 @@ php artisan migrate:fresh --seed //This will seed our default data
 php artisan optimize:clear
 
 php artisan serve
+
+php artisan queue:work //for mail queue
 ```
 
   Make sure to update below information in .env file based on your SMTP information to verify mail functionality.

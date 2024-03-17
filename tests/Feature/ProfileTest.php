@@ -1,4 +1,4 @@
-<?php
+tests/Feature/ProfileTest.php<?php
 
 use App\Models\User;
 

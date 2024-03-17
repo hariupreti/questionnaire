@@ -22,11 +22,19 @@ class StorequestionnaireRequest extends FormRequest
      */
     public function rules(Request $request): array
     {
-        return [
-            'id' => "nullable|sometimes|integer|exists:questionnaires,id",
-            'title' => "required|string|max:150|min:4|unique:questionnaires,title,".$request->title,
-            'selectedExpiryDate' => 'required|date|after:today',
-        ];
+        if ($request->id > 0) {
+            //update case
+            return [
+                'id' => "required|integer|exists:questionnaires,id",
+                'title' => "required|string|max:150|min:4|unique:questionnaires,title," . $request->id,
+                'selectedExpiryDate' => 'required|date|after:today',
+            ];
+        } else {
+            return [
+                'title' => "required|string|max:150|min:4|unique:questionnaires,title," . $request->title,
+                'selectedExpiryDate' => 'required|date|after:today',
+            ];
+        }
     }
 
     public function attributes(): array

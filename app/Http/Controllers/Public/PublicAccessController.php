@@ -14,7 +14,11 @@ class PublicAccessController extends Controller
 {
     public function accessTest($token)
     {
-        $decryptToken = decrypt($token);
+        try {
+            $decryptToken = decrypt($token);
+        } catch (\Throwable $th) {
+            return Inertia::render("GeneralErrorPage", ["message" => "You are unauthorized"]);
+        }
         if (!empty($decryptToken)) {
             $validity = $decryptToken['valid_till'];
             $studentEmail = $decryptToken['email'];
@@ -30,8 +34,18 @@ class PublicAccessController extends Controller
                 if (!empty($studentExistCheck)) {
                     //Load questionnaire and start test
                     $questionnaire = questionnaire::findOrFail($quessionnaireId);
+                    //verify if students alredy give test or not
+                    $checkRecord = studentAnswers::where([
+                        'student_id' => $studentExistCheck->id,
+                        'questionnaire_id' => $questionnaire->id,
+                    ])->first();
+                    if (!empty($checkRecord)) {
+                        $errorMessage = "Already submitted your test";
+                    }
                     $serializeIds = unserialize($questionnaire->questions);
-                    if (!empty($serializeIds)) {
+                    if ($errorMessage != "") {
+                        return Inertia::render("GeneralErrorPage", ["message" => $errorMessage]);
+                    } else if (!empty($serializeIds)) {
                         $allQuestions = question::whereIn("id", $serializeIds)->with("answers")->get();
                         return Inertia::render("Test", ["questions" => $allQuestions, "student" => $studentExistCheck, "questionnaire" => $questionnaire]);
                     }
@@ -41,6 +55,7 @@ class PublicAccessController extends Controller
             } else {
                 $errorMessage = "Sorry, questionnaire already got expired";
             }
+            return Inertia::render("GeneralErrorPage", ["message" => $errorMessage]);
         }
     }
 
@@ -53,13 +68,14 @@ class PublicAccessController extends Controller
             'answerData' => 'required|array',
         ]);
 
-        if($validated){
+        if ($validated) {
             $studentAnswers = new studentAnswers();
             $studentAnswers->student_id = $request->input('studentId');
             $studentAnswers->questionnaire_id = $request->input('questionnaireId');
             $studentAnswers->answer_data = serialize($request->input('answerData'));
+            $studentAnswers->save();
         }
 
-        return redirect('/')->with("success","You have completed your test!!!");
+        return redirect('/')->with("success", "You have completed your test!!!");
     }
 }

@@ -53,7 +53,6 @@ class QuestionnaireController extends Controller
                 $subject = "Questionnaire Announcement";
                 $students = student::all();
                 foreach ($students as $student) {
-                    $content = "Please click on below link to access your test. \n";
                     $uniqueURLHanlder = [
                         "valid_till" => date('Y-m-d', strtotime($request->selectedExpiryDate)),
                         "email" => $student->email,
@@ -61,7 +60,7 @@ class QuestionnaireController extends Controller
                     ];
                     $encryptedURL = encrypt($uniqueURLHanlder, true);
                     $fullLink = url("/questionnaire/access/{$encryptedURL}");
-                    $content .= '<a href="' . $fullLink . '" target="_blank"> Access Test </a>';
+                    $content = $fullLink;
                     SendQuestionnaireAnnouncementEmailJob::dispatch($student->email, $subject, $content);
                 }
 
