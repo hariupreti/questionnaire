@@ -13,48 +13,6 @@ use Inertia\Inertia;
 
 class QuestionnaireController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index($token)
-    {
-        $decryptToken = decrypt($token);
-        if (!empty($decryptToken)) {
-            $validity = $decryptToken['valid_till'];
-            $studentEmail = $decryptToken['email'];
-            $quessionnaireId = $decryptToken['quessionnaire_id'];
-
-            $errorMessage = "";
-            //validate
-            $today = strtotime(date("Y-m-d"));
-            $validTill = strtotime($validity);
-            $difference = abs($validTill - $today) / (60 * 60 * 24);
-            if ($difference > 0) {
-                $studentExistCheck =  student::where("email", $studentEmail)->first();
-                if (!empty($studentExistCheck)) {
-                    //Load questionnaire and start test
-                    $questionnaire = questionnaire::findOrFail($quessionnaireId);
-                    $serializeIds = unserialize($questionnaire->questions);
-                    if (!empty($serializeIds)) {
-                        $allQuestions = question::whereIn("id", $serializeIds)->with("answers")->get();
-                        return Inertia::render("Test", ["questions" => $allQuestions, "student" => $studentExistCheck, "questionnaire" => $questionnaire]);
-                    }
-                } else {
-                    $errorMessage = "unauthorized access!!!";
-                }
-            } else {
-                $errorMessage = "Sorry, questionnaire already got expired";
-            }
-        }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     private function getRandomQuestions($subject, $count)
     {
@@ -95,7 +53,7 @@ class QuestionnaireController extends Controller
                 $subject = "Questionnaire Announcement";
                 $students = student::all();
                 foreach ($students as $student) {
-                    $content = "Please click on below link or paste it browser URL field to access your test. \n";
+                    $content = "Please click on below link to access your test. \n";
                     $uniqueURLHanlder = [
                         "valid_till" => date('Y-m-d', strtotime($request->selectedExpiryDate)),
                         "email" => $student->email,
@@ -103,37 +61,13 @@ class QuestionnaireController extends Controller
                     ];
                     $encryptedURL = encrypt($uniqueURLHanlder, true);
                     $fullLink = url("/questionnaire/access/{$encryptedURL}");
-                    $content .= $fullLink;
+                    $content .= '<a href="' . $fullLink . '" target="_blank"> Access Test </a>';
                     SendQuestionnaireAnnouncementEmailJob::dispatch($student->email, $subject, $content);
                 }
 
                 return back()->with("success", "Questionnaire generated successfully and mail is queued!!!");
             }
         }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(questionnaire $questionnaire)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(questionnaire $questionnaire)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatequestionnaireRequest $request, questionnaire $questionnaire)
-    {
-        dd($request->all(), $questionnaire);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Public\PublicAccessController;
 use App\Http\Controllers\QuestionnaireController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -17,7 +18,9 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/questionnaire/access/{token}', [QuestionnaireController::class, 'index'])->name('access.questionnaire');
+//Test Access using encrypted token
+Route::get('/questionnaire/access/{token}', [PublicAccessController::class, 'accessTest'])->name('access.questionnaire');
+Route::post('/questionnaire/record', [PublicAccessController::class, 'saveTestAnswer'])->name('save.answers');
 
 // Authorized and verified access only
 Route::middleware(['auth', 'verified'])->group(function () {

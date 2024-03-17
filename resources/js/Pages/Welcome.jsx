@@ -25,7 +25,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
             <div className="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
                 <div className="relative min-h-screen flex flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
                     <div className="relative w-full max-w-2xl px-6 lg:max-w-7xl">
-                        <header className="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
+                        <header className="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3 mt-8">
                             <div className="shrink-0 flex items-center">
                                 <Link href="/">
                                     <ApplicationLogo className="h-40 rounded-none -mt-24 scale-50 absolute -left-2" />
@@ -34,8 +34,8 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                             <div className="flex lg:justify-center lg:col-start-2">
 
                             </div>
-                            <nav className="-mx-3 flex flex-1 justify-end">
-                                { auth.user ? (
+                            <nav className="-mx-3 flex flex-1 justify-end shrink-0 top-8 absolute right-0">
+                                {auth.user ? (
                                     <div className="hidden sm:flex sm:items-center sm:ms-6">
                                         <div className="ms-3 relative">
                                             <Dropdown>
@@ -73,18 +73,6 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                     </div>
                                 ) : (
                                     <>
-                                        {/* <Link
-                                            href={route('login')}
-                                            className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                                        >
-                                            Log in
-                                        </Link> */}
-                                        <Link
-                                            href={route('register')}
-                                            className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                                        >
-                                            Create Student Account
-                                        </Link>
                                     </>
                                 )}
                             </nav>
@@ -104,14 +92,16 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                                 </div>
                                             </div>
                                             :
-                                            <div><Login></Login><div className='mt-20 text-right'>
-                                                <div className='text-lg font-sm'>Searching for credentials ?</div>
-                                                <div><span className='text-xs cursor-pointer hover:text-black' onClick={(e) => toggle(e)}>View default admin</span></div>
-                                                <div className={`text-xs text-left mt-5 p-8 bg-slate-600 ${show ? "hidden" : "display"}`}>
-                                                    <div><strong>Username:</strong> admin@questionnaire.test</div>
-                                                    <div><strong>Password:</strong> password</div>
+                                            <div className=''>
+                                                <Login></Login>
+                                                <div className='mt-20 text-right'>
+                                                    <div className='text-lg font-sm'>Searching for credentials ?</div>
+                                                    <div><span className='text-xs cursor-pointer hover:text-black' onClick={(e) => toggle(e)}>View default admin</span></div>
+                                                    <div className={`text-xs text-left mt-5 p-8 bg-slate-600 ${show ? "hidden" : "display"}`}>
+                                                        <div><strong>Username:</strong> admin@questionnaire.test</div>
+                                                        <div><strong>Password:</strong> password</div>
+                                                    </div>
                                                 </div>
-                                            </div>
                                             </div>}
                                 </div>
                                 <hr></hr>
@@ -121,6 +111,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
 
                         <footer className="py-16 text-center text-sm text-black dark:text-white/70">
                             Proshore Assessment
+                            <div className='text-xs'>By <a href='https://github.com/hariupreti/questionnaire' target='_blank' className='text-green-500'>Hari Upreti</a></div>
                         </footer>
                     </div>
                 </div>
