@@ -13,6 +13,8 @@ Once our env setup completed run following commands.
 ```unix
 composer install
 
+npm install
+
 php artisan key:generate
 
 php artisan migrate:fresh --seed //This will seed our default data
@@ -20,6 +22,8 @@ php artisan migrate:fresh --seed //This will seed our default data
 php artisan optimize:clear
 
 php artisan serve
+
+npm run dev
 
 php artisan queue:work //for mail queue
 ```
